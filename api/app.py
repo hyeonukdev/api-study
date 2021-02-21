@@ -60,7 +60,7 @@ def insert_tweet(user_tweet):
 
 def insert_follow(user_follow):
     return current_app.database.execute(text("""
-        INSERT INTO users_follow_list (
+        INSERT INTO users_follow_list (   
             user_id,
             follow_user_id
         ) VALUES (
