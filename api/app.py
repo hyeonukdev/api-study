@@ -7,6 +7,7 @@ from config import *
 from manage_db import *
 from datetime   import datetime, timedelta
 from functools import wraps
+from flask_cors import CORS
 
 
 class CustomJSONEncoder(JSONEncoder):
@@ -18,6 +19,8 @@ class CustomJSONEncoder(JSONEncoder):
 
 def create_app(test_config = None):
     app = Flask(__name__)
+
+    CORS(app)
 
     app.json_encoder = CustomJSONEncoder
 
@@ -100,13 +103,14 @@ def create_app(test_config = None):
         return '', 200
 
     @app.route('/timeline/<int:user_id>', methods=['GET'])
-    def timeline(user_id):
+    @login_required
+    def timeline():
+        user_id = g.user_id
         return jsonify({
             'user_id'  : user_id,
             'timeline' : get_timeline(user_id)
         })
 
-    
 
     return app
 
